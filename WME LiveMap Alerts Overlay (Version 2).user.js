@@ -42,8 +42,8 @@ function bootstrapLiveMapAlerts() {
 //--------------------------------------------------------------------------------------------------------
 function checkLayerNum() {
     var lmaoLayer = null;
-    for (i = 0; i < Waze.map.layers.length; i++) {
-        if (Waze.map.layers[i].uniqueName == '__livemap_alerts') lmaoLayer = i;
+    for (i = 0; i < W.map.layers.length; i++) {
+        if (W.map.layers[i].uniqueName == '__livemap_alerts') lmaoLayer = i;
     }
     //console.log('WME LMAO: layer number = ' + lmaoLayer);
     return lmaoLayer;
@@ -52,7 +52,7 @@ function checkLayerNum() {
 
 //--------------------------------------------------------------------------------------------------------
 function getBounds() {
-    var alertBounds = Waze.map.getExtent();
+    var alertBounds = W.map.getExtent();
 
     alertBounds.transform(new OpenLayers.Projection("EPSG:900913"), new OpenLayers.Projection("EPSG:4326"));
     //console.log('WME LMAO: Current bounds = Left ' + alertBounds.left + ', Right ' + alertBounds.right + ', Bottom ' + alertBounds.bottom + ', Top ' + alertBounds.top);//verify transform
@@ -62,7 +62,7 @@ function getBounds() {
 
 //--------------------------------------------------------------------------------------------------------
 function getRoutingServer() {
-    var server = Waze.location.code;
+    var server = W.app.getAppRegionCode();
     console.log('WME LMAO: server = ' + server);
 
     switch (server) {
@@ -133,7 +133,7 @@ function addImage(lat, long, type, detail) {
 
     var coords = OpenLayers.Layer.SphericalMercator.forwardMercator(long, lat);
     var point = new OpenLayers.Geometry.Point(coords.lon, coords.lat);
-    var alertPx = Waze.map.getPixelFromLonLat(new OpenLayers.LonLat(coords.lon, coords.lat));
+    var alertPx = W.map.getPixelFromLonLat(new OpenLayers.LonLat(coords.lon, coords.lat));
     var imgRoot = '/assets';
 
     switch (type) {
@@ -484,8 +484,8 @@ function initializeLiveMapAlerts() {
 
 
     LiveMapAlerts_Layer.setZIndex(9999);
-    Waze.map.addLayer(LiveMapAlerts_Layer);
-    Waze.map.addControl(new OpenLayers.Control.DrawFeature(LiveMapAlerts_Layer, OpenLayers.Handler.Path));
+    W.map.addLayer(LiveMapAlerts_Layer);
+    W.map.addControl(new OpenLayers.Control.DrawFeature(LiveMapAlerts_Layer, OpenLayers.Handler.Path));
     LiveMapAlerts_Layer.setVisibility(lmaoVisibility);
 
     var divPopupCheck = document.getElementById('divLMAO');
@@ -512,18 +512,18 @@ function initializeLiveMapAlerts() {
 
     var lmaoLayer = checkLayerNum();
 
-    Waze.map.events.register("mousemove", Waze.map, function(e) {
+    W.map.events.register("mousemove", W.map, function(e) {
         hideAlertPopup();
         var position = this.events.getMousePosition(e);
         //console.log('WME LMAO: coords xy = ' + position.x + ' ' + position.y);
         var lmaoLayer = checkLayerNum();
-        if (Waze.map.layers[lmaoLayer].features.length > 0) {
+        if (W.map.layers[lmaoLayer].features.length > 0) {
 
-            //var alertCount = Waze.map.layers[lmaoLayer].features.length;
+            //var alertCount = W.map.layers[lmaoLayer].features.length;
             //console.log('WME LMAO: Current LiveMap alert count = ' + alertCount);
 
-            var alertFeatures = Waze.map.layers[lmaoLayer];
-            for (j = 0; j < Waze.map.layers[lmaoLayer].features.length; j++) {
+            var alertFeatures = W.map.layers[lmaoLayer];
+            for (j = 0; j < W.map.layers[lmaoLayer].features.length; j++) {
 
                 var lmaoLayerVisibility = LiveMapAlerts_Layer.getVisibility();
                 var alertX = alertFeatures.features[j].attributes.pixel.x;
@@ -537,7 +537,7 @@ function initializeLiveMapAlerts() {
     });
 
     //refresh if user moves map
-    Waze.map.events.register("moveend", Waze.map, getLiveMapAlerts);
+    W.map.events.register("moveend", W.map, getLiveMapAlerts);
 
     window.setTimeout(getLiveMapAlerts(), 500);
 
