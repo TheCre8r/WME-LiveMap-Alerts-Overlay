@@ -2,8 +2,8 @@
 // @name                WME LiveMap Alerts Overlay (Version 2)
 // @author		        The_Cre8r
 // @description         Overlay alerts from the Waze LiveMap
-// @include             https://www.waze.com/editor/*
-// @include             https://www.waze.com/*/editor/*
+// @include             https://www.waze.com/editor*
+// @include             https://www.waze.com/*/editor*
 // @include             https://beta.waze.com/*
 // @exclude             https://www.waze.com/user/*
 // @exclude             https://www.waze.com/*/user/*
