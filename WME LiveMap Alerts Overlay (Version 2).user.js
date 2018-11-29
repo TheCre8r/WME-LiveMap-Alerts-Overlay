@@ -7,7 +7,7 @@
 // @include             https://beta.waze.com/*
 // @exclude             https://www.waze.com/user/*
 // @exclude             https://www.waze.com/*/user/*
-// @version             2.5.2.1
+// @version             2.5.3.0
 // @grant               none
 // @namespace           https://greasyfork.org/en/users/13670-the-cre8r
 // ==/UserScript==
